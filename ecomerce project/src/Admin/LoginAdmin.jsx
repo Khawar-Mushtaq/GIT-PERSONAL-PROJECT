@@ -1,8 +1,10 @@
 import React from 'react'
 import { Form } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import axios from 'axios';
 const LoginAdmin = () => {
+  const adminNavigation=useNavigate()
     const [loginAdmin,setLoginAdmin]=useState({
         email:"",
         password:""
@@ -10,9 +12,17 @@ const LoginAdmin = () => {
     const handlechange=(e)=>{
         setLoginAdmin(prevalue=>({...prevalue,[e.target.name]:e.target.value}))
     }
-    const handlesubmit=(e)=>{
+    const handlesubmit=async(e)=>{
         e.preventDefault();
-        console.log(loginAdmin)
+        try {
+          const login=await axios.post("http://localhost:4000/api/admin/adminlogin",{...loginAdmin})
+          localStorage.setItem("login",JSON.stringify(login))
+          console.log(login)
+          adminNavigation("/addproduct")
+          
+        } catch (error) {
+          console.log("error",error)
+        }
     }
   return (
     <div>

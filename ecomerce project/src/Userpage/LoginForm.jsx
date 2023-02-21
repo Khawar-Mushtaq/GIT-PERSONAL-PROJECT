@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form } from "reactstrap";
+import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 const LoginForm = () => {
     const Navigate=useNavigate()
@@ -10,10 +11,19 @@ const LoginForm = () => {
     const handlechange=(e)=>{
         setloginform(prevalue=>({...prevalue,[e.target.name]:e.target.value}))
     }
-    const handlesubmit=(e)=>{
+    const handlesubmit=async(e)=>{
         e.preventDefault();
         console.log(loginform)
-        Navigate("/userNavbar")
+        try {
+          const login=await axios.post("http://localhost:4000/api/User/userlogin",{...loginform})
+          localStorage.setItem("login",JSON.stringify(login))
+          console.log(login)
+          Navigate("/getproduct")
+          
+        } catch (error) {
+          console.log("error",error)
+        }
+       
     }
   return (
     <div>
@@ -123,7 +133,7 @@ const LoginForm = () => {
 
                   <p class="text-sm font-semibold mt-2 pt-1 mb-0">
                     <Link
-                      to={'login/register'}
+                      to={'/register'}
                       class="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
                     >
                       Register

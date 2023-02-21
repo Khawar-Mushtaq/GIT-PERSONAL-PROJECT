@@ -1,10 +1,33 @@
-import React from "react";
+import React , { useState }from "react";
 import { Form } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
+import axios from 'axios';
 const Register=()=>{
+  const RegisterNavigate=useNavigate('')
+  const [Registerform,setRegisterForm]=useState({
+    username:"",
+    email:"",
+    password:""
+  })
+  const handlechange=(e)=>{
+    setRegisterForm(prevalue=>({...prevalue,[e.target.name]:e.target.value}))
+  }
+
+  const handlesubmit=async(e)=>{
+    e.preventDefault()
+    try {
+      const response=await axios.post("http://localhost:4000/api/User/userRegister",{...Registerform})
+      localStorage.setItem("response",JSON.stringify(response))
+      console.log(response)
+      RegisterNavigate("/login")
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
     return(
         <div>
-            <Form>
+            <Form onSubmit={handlesubmit}>
         <section class="h-screen">
           <div class="px-6 h-full text-gray-800">
             <div class="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
@@ -80,6 +103,8 @@ const Register=()=>{
                   <input
                     type="text"
                     name="username"
+                    value={Registerform.username}
+                    onChange={handlechange}
                     class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="exampleFormControlInput2"
                     placeholder="Username"
@@ -89,6 +114,8 @@ const Register=()=>{
                   <input
                     type="text"
                     name="email"
+                    value={Registerform.email}
+                    onChange={handlechange}
                     class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="exampleFormControlInput2"
                     placeholder="Email address"
@@ -98,6 +125,8 @@ const Register=()=>{
                   <input
                     type="password"
                     name="password"
+                    value={Registerform.password}
+                    onChange={handlechange}
                     class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="exampleFormControlInput2"
                     placeholder="Password"

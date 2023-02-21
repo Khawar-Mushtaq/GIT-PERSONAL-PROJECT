@@ -19,22 +19,41 @@ const AddProduct = () => {
     Ram: "",
     file: "",
   });
+  // const [imageSrc, setImageSrc] = useState("");
+
+  // function handleFileChange(event) {
+  //   const file = event.target.files[0];
+
+  //   if (file) {
+  //     const reader = new FileReader();
+
+  //     reader.onload = function (event) {
+  //       setImageSrc(event.target.result);
+  //     };
+
+  //     reader.readAsDataURL(file);
+  //   }
+  // }
+ 
   const handlechange = (e) => {
     setformdata((prevalue) => ({
       ...prevalue,
       [e.target.name]: e.target.value,
     }));
   };
-  const handlesubmit = async(e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      const products=await axios.post("http://localhost:4000/api/Product/addproduct",{
-        ...formdata
-      })
+      const products = await axios.post(
+        "http://localhost:4000/api/Product/addproduct",
+        {
+          ...formdata,
+        }
+      );
       console.log(products);
-      localStorage.setItem("product",JSON.stringify(products))
+      localStorage.setItem("product", JSON.stringify(products));
     } catch (error) {
-      console.log("Error",error)
+      console.log("Error", error);
     }
   };
   return (
@@ -89,18 +108,19 @@ const AddProduct = () => {
                 <Input
                   type="text"
                   name="Ram"
-                  placeholder="Hardisk"
+                  placeholder="Ram"
                   value={formdata.Ram}
                   onChange={handlechange}
                 />
               </FormGroup>
-              <FormGroup>
+              {/* <FormGroup>
                 <Label for="exampleFile">File</Label>
                 <Input id="exampleFile" name="file" type="file" 
+                accept="image/*" onChange={handleFileChange} 
                 value={formdata.file}
-                onChange={handlechange}
                 />
               </FormGroup>
+              {imageSrc && <img src={imageSrc} alt="Selected Image" style={{width:"50px"}}/>} */}
               <Button type="submit">Add Product</Button>
             </Form>
           </Card>

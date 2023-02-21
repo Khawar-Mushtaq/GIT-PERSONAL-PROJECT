@@ -7,9 +7,10 @@ import {
   CardSubtitle,
   CardText,
   Button,
+  Container,
 } from "reactstrap";
 const ViewProduct = () => {
-  const [dataProduct, setProduct] = useState("");
+  const [dataProduct, setProduct] = useState([]);
   useEffect(() => {
     getallProducts();
   }, []);
@@ -26,14 +27,15 @@ const ViewProduct = () => {
   console.log(dataProduct);
   return (
     <div>
-      {/* {dataProduct.map((dataProduct) => {
+      {dataProduct.map((dataProduct) => {
         return (
+          <Container>
           <Card
             style={{
               width: "18rem",
             }}
           >
-            <img src={dataProduct.file} />
+            {/* <img src={dataProduct.file} /> */}
             <CardBody>
               <CardTitle tag="h5">{dataProduct.Pname}</CardTitle>
               <CardSubtitle className="mb-2 text-muted" tag="h6">
@@ -46,11 +48,12 @@ const ViewProduct = () => {
                 <br></br>
                 <p>{dataProduct.Ram}</p>
               </CardText>
-              <Button>Button</Button>
+              <Button>Order</Button>
             </CardBody>
           </Card>
+          </Container>
         );
-      })} */}
+      })}
     </div>
   );
 };
